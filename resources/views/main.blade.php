@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="{{ asset('main/vendor/fontawesome-free/css/all.min.css') }}">		
     <link rel="stylesheet" href="{{ asset('main/vendor/animate/animate.min.css') }}">		
     <link rel="stylesheet" href="{{ asset('main/vendor/magnific-popup/magnific-popup.min.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('main/vendor/owl.carousel/assets/owl.carousel.min.css') }}"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('main/vendor/owl.carousel/assets/owl.theme.default.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('main/css/theme.css') }}">
     <link rel="stylesheet" href="{{ asset('main/css/theme-elements.css') }}">
     <link rel="stylesheet" href="{{ asset('main/css/skins/default.css') }}">		
@@ -52,6 +50,17 @@
             -webkit-line-clamp: 1; 
             -webkit-box-orient: vertical;
         }
+        
+        @media (max-width: 1200px) and (min-width: 992px){
+            .header-logo img{
+                display: none !important
+            }
+        }
+        @media (max-width: 992px){
+            .description span{
+                font-size: 18px !important
+            }
+        }
     </style>
 </head>
 <body class="loading-overlay-showing" data-plugin-page-transition data-loading-overlay data-plugin-options="{'hideDelay': 0}">
@@ -71,7 +80,7 @@
                             <div class="header-column">
                                 <div class="header-row">
                                     <div class="header-logo">
-                                        <a style="font-family: 'Viga';margin: 0; align-items: center;" href="#header" class="text-decoration-none d-flex text-10 text-primary font-weight-bold">
+                                        <a style="font-family: 'Viga';margin: 0; align-items: center;" class="text-decoration-none d-flex text-10 text-primary font-weight-bold">
                                             <img src="{{ asset('img/logo.png') }}" alt="Expo TIK" width="180px" height="100%" class="mr-3 d-none d-md-block">
                                             <span style="white-space: nowrap; color: #1B8F9E">EXPO TIK</span>
                                         </a>
@@ -113,7 +122,7 @@
 									<b>INSPIRATIF</b>
 								</span>
                             </span></h2>
-							<h4 class="font-weight-normal appear-animation animated fadeInRightShorter appear-animation-visible" data-appear-animation="fadeInRightShorter" data-appear-animation-delay="1500" style="animation-delay: 1500ms;"><span style="color: #34364a; font-size: 20px; line-height: 32px">
+							<h4 class="font-weight-normal description appear-animation animated fadeInRightShorter appear-animation-visible" data-appear-animation="fadeInRightShorter" data-appear-animation-delay="1500" style="animation-delay: 1500ms;"><span style="color: #34364a; font-size: 20px; line-height: 32px">
                                 Expo TIK merupakan event pameran produk-produk penerapan teknologi karya mahasiswa semester 6 Jurusan Teknik Informatika dan Komputer. 
                                 Terdapat {{ $projects->count() }} tim dengan {{ $categories->count() }} kategori produk terapan berupa 
                                 <?php $i = 1; ?>
@@ -182,7 +191,14 @@
                                                                         <a href="#vote-form" onclick="$('#vote-title').text('{{ $project->title }}');$('#wvote').val('{{ Crypt::encrypt($project->id) }}')" class="popup-with-form btn btn-py-lg-2 btn-py-1 btn-rounded btn-warning py-lg-2 py-1 mb-2" href="#">Vote &nbsp;<span><i class="fas fa-vote-yea"></i></span></a>
                                                                     </span>
                                                                 </span>
-                                                                <span data-toggle="modal" data-target="#detail-project" class="thumb-info-action" onclick="$('#wvote-detail').val('{{ Crypt::encrypt($project->id) }}');$('#detail-project img').attr('src', '{{ asset(null) }}uploaded/{{ $project->thumbnail }}');$('#detail-project a[target=_blank]').attr('href', '{{ $project->url_gmeet }}');$('#detail-project #detail-title').text('{{ $project->title }}');$('#detail-project #detail-desc').html($('textarea#{{ $fnd }}').val());">
+                                                                <span data-toggle="modal" data-target="#detail-project" class="thumb-info-action" onclick="
+                                                                        $('#wvote-detail').val('{{ Crypt::encrypt($project->id) }}');
+                                                                        $('#detail-project img').attr('src', '{{ asset(null) }}uploaded/{{ $project->thumbnail }}');
+                                                                        $('#detail-project a.popup-youtubex').attr('href', '{{ $project->url_youtube }}');
+                                                                        $('#detail-project a.popup-gmeetx').attr('href', '{{ $project->url_gmeet }}');
+                                                                        $('#detail-project #detail-title').text('{{ $project->title }}');
+                                                                        $('#detail-project #detail-desc').html($('textarea#{{ $fnd }}').val());
+                                                                    ">
                                                                     <textarea id="{{ $fnd }}" class="d-none">{{ $project->desc }}</textarea>
                                                                     <span class="thumb-info-action-icon bg-light opacity-8"><i class="text-color-dark fas fa-search-plus"></i></span>
                                                                 </span>
@@ -209,7 +225,7 @@
                         </div>
                     </div>
                     <input type="hidden" id="wvote" name="wvote" required readonly autocomplete="off">
-                    <div class="form-group">
+                    <div class="form-group" id="form-group-name">
                         <label>Nama *</label>
                         <input type="text" data-msg-required="Nama wajib diisi" id="vote-name" class="form-control" name="name" required>
                     </div>
@@ -236,8 +252,8 @@
                                 <div class="col-lg-7 mt-4">
                                     <div class="text-6 font-weight-bold mb-3" id="detail-title"></div>
                                     <p id="detail-desc" class="mb-4"></p>
-                                    <!--<a href="" target="_blank" class="popup-youtubex btn btn-danger shadow-sm mb-2 mr-1 btn-rounded">Video Youtube &nbsp;<i class="fab fa-youtube"></i></a>-->
-                                    <a href="" target="_blank" class="btn btn-info shadow-sm btn-rounded mb-2">Bincang Google Meet &nbsp;<i class="fas fa-comments"></i></a>
+                                    <a href="" target="_blank" class="popup-youtubex btn btn-danger shadow-sm mb-2 mr-1 btn-rounded">Video Youtube &nbsp;<i class="fab fa-youtube"></i></a>
+                                    <a href="" target="_blank" class="btn btn-info popup-gmeetx shadow-sm btn-rounded mb-2">Bincang Google Meet &nbsp;<i class="fas fa-comments"></i></a>
                                     <br>
                                     <a href="#vote-form" onclick="$('#vote-title').text($('#detail-title').text());$('#wvote').val($('#wvote-detail').val())" class="popup-with-form btn btn-rounded btn-warning" href="#" data-dismiss="modal">Vote &nbsp;<span><i class="fas fa-vote-yea"></i></span></a>
                                 </div>
@@ -272,7 +288,6 @@
         <script src="{{ asset('main/vendor/common/common.min.js') }}"></script>		
         <script src="{{ asset('main/vendor/jquery.validation/jquery.validate.min.js') }}"></script>		
         <script src="{{ asset('main/vendor/isotope/jquery.isotope.min.js') }}"></script>		
-        {{-- <script src="{{ asset('main/vendor/owl.carousel/owl.carousel.min.js') }}"></script> --}}
         <script src="{{ asset('main/vendor/magnific-popup/jquery.magnific-popup.min.js') }}"></script>		
         <script src="{{ asset('main/js/theme.js') }}"></script>
         <script src="{{ asset('main/js/theme.init.js') }}"></script>
@@ -317,24 +332,31 @@
             });
             $('#vote-form').submit((e) => {
                 e.preventDefault();
-                if ($('#vote-name').val() && $('#wvote').val() && $('#vote-email').val()) {
-                    $.ajax({
-                        method: 'POST',
-                        url: "{{ url('voting') }}",
-                        data: { "_token": "{{ csrf_token() }}", vpk: $('#wvote').val(), vname: $('#vote-name').val(), vemail: $('#vote-email').val()},
-                        error: function () { swal("Vote Gagal", '', "error"); },
-                        success: function (res) {
-                            if (res.status) {
-                                if (res.message == 'success') { swal("Vote Berhasil", "Terima kasih sudah melakukan vote", "success"); }
-                                if (res.message == 'due') { swal("Vote sudah ditutup", res.i, "info"); }
-                                if (res.message == 'exists') { swal("Anda sudah melakukan vote", "", "info"); }
-                            } else { swal("Vote Gagal", '', "error"); }
-                        }
-                    });
-                    $('#vote-name').val('') 
-                    $('#wvote').val('') 
-                    $('#vote-email').val('')
-                    $.magnificPopup.close()
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if ($('#vote-name').val() && $('#vote-name').val() != ' ') {
+                    if ($('#wvote').val() && $('#vote-email').val() && re.test(String($('#vote-email').val()).toLowerCase())) {
+                        $.ajax({
+                            method: 'POST',
+                            url: "{{ url('voting') }}",
+                            data: { "_token": "{{ csrf_token() }}", vpk: $('#wvote').val(), vname: $('#vote-name').val(), vemail: $('#vote-email').val()},
+                            error: function () { swal("Vote Gagal", '', "error"); },
+                            success: function (res) {
+                                if (res.status) {
+                                    if (res.message == 'success') { swal("Vote Berhasil", "Terima kasih sudah melakukan vote", "success"); }
+                                    if (res.message == 'due') { swal("Vote sudah ditutup", res.i, "info"); }
+                                    if (res.message == 'exists') { swal("Anda sudah melakukan vote", "", "info"); }
+                                } else { swal("Vote Gagal", '', "error"); }
+                            }
+                        });
+                        $('#vote-email, #wvote, #vote-name') 
+                        $('#vote-form .form-group').removeClass('has-success');
+                        $('#vote-form .form-group .form-control').removeClass('is-valid');
+                        $.magnificPopup.close()
+                    } 
+                } else {
+                    $('#vote-form #form-group-name').addClass('has-danger').append('<label id="vote-name-error" class="error" for="vote-name">Nama wajib diisi</label>').removeClass('has-success');
+                    $('#vote-form #form-group-name .form-control').addClass('valid').addClass('is-invalid').removeClass('is-valid');
+                    return false;
                 }
             });
         </script>
