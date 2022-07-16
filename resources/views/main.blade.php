@@ -271,7 +271,7 @@
                     <div class="container py-2">
                         <div class="row">
                             <div class="col d-flex align-items-center justify-content-center">
-                                <p><strong>Afandi Aziz</strong> © 2021</p>
+                                <a href="https://linkedin.com/in/afandiaziz/"><p class="text-white"><strong>Afandi Aziz</strong> © 2021</p></a>
                             </div>
                         </div>
                     </div>
