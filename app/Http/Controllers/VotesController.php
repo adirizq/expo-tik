@@ -160,7 +160,7 @@ class VotesController extends Controller
         $headers    = array('Content-Type' => ['png','svg','eps']);
         $type       = $type == 'jpg' ? 'png' : $type;
         $image      = \QrCode::format($type)
-                    ->size(300)->generate($request->vpk);
+                    ->size(300)->generate(url('voting/' . $request->vpk));
 
         $imageName = 'qr-code';
         if ($type == 'svg') {
