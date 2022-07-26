@@ -6,7 +6,7 @@ use App\Models\Config;
 use App\Models\Project;
 use Image;
 use App\Models\ProjectCategories;
-use Facade\FlareClient\Stacktrace\File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -169,6 +169,13 @@ class ProjectController extends Controller
     public function destroy(Request $request, Project $project)
     {
         $get = $project->find($request->query('project'));
+        
+        $image_path = public_path('/uploaded/'.$get->thumbnail);
+
+        if(File::exists($image_path)) {
+            File::delete($image_path);
+        }
+
         if ($get->delete()) {
             $request->session()->flash('success', 'Berhasil Hapus Data');
         } else {

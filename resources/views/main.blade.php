@@ -187,7 +187,9 @@
                                                                     </span>
                                                                     <span class="mt-1">
                                                                         <a href="{{ $project->url_youtube }}" target="_blank" class="btn btn-danger shadow-sm btn-rounded btn-py-lg-2 btn-py-1 py-lg-2 py-1 mb-2 mr-1">Video Youtube &nbsp;<i class="fab fa-youtube"></i></a>
-                                                                        <a href="{{ $project->url_gmeet }}" target="_blank" class="btn btn-info shadow-sm btn-rounded btn-py-lg-2 btn-py-1 mb-2 py-lg-2 py-1 mr-1">Bincang Google Meet &nbsp;<i class="fas fa-comments"></i></a>
+                                                                        @if (isset($project->url_gmeet))
+                                                                            <a href="{{ $project->url_gmeet }}" target="_blank" class="btn btn-info shadow-sm btn-rounded btn-py-lg-2 btn-py-1 mb-2 py-lg-2 py-1 mr-1">Bincang Google Meet &nbsp;<i class="fas fa-comments"></i></a>
+                                                                        @endif
                                                                         <a href="#vote-form" onclick="$('#vote-title').text('{{ $project->title }}');$('#wvote').val('{{ Crypt::encrypt($project->id) }}')" class="popup-with-form btn btn-py-lg-2 btn-py-1 btn-rounded btn-warning py-lg-2 py-1 mb-2" href="#">Vote &nbsp;<span><i class="fas fa-vote-yea"></i></span></a>
                                                                     </span>
                                                                 </span>

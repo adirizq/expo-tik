@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', [ExpoController::class, 'index']);
+Route::get('voting/{encId}', [VotesController::class, 'showVote']);
 Route::post('voting', [VotesController::class, 'store']);
+Route::post('download-qr-code/{type}', [VotesController::class, 'downloadQRCode'])->name('qrcode.download');
 Route::get('administrator', function () {
     return redirect(url('administrator/dashboard')); 
 });

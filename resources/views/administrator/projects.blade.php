@@ -56,6 +56,7 @@
                             <th width="12%">Youtube URL</th>
                             <th width="12%">Google Meet URL</th>
                             <th width="25%">Deskripsi</th>
+                            <th>QR</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -70,7 +71,16 @@
                             <td class="small align-middle">{{ str_replace(['https://www.', 'https://'], null, $item->url_youtube) }}</td>
                             <td class="small align-middle"><a href="{{ $item->url_gmeet }}" target="_blank">{{ str_replace(['https://', 'https://www.'], null, $item->url_gmeet) }}</a></td>
                             <td style="white-space: pre-line; text-overflow: ellipsis; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ $item->desc }}</td>
+                            <td>{!! QrCode::format('svg')->size(100)->generate(url('voting/' . Crypt::encrypt($item->id))) !!}</td>
                             <td class="text-center align-middle"><div class="btn-group" role="group" aria-label="Basic example">
+                                <form class="form-horizontal" action="{{ route('qrcode.download', [ 'type' => 'svg' ])}}" method="post">
+                                    @csrf
+                                    <input type="hidden" id="vpk" name="vpk" required readonly autocomplete="off" value="{{ Crypt::encrypt($item->id) }}">
+                                    <button type="submit" class="align-middle btn btn-primary btn-sm">
+                                        <i class="fas fa-fw fa-download"></i>
+                                        Download QR
+                                    </button>
+                                </form>
                                 <a href="{{ url('administrator/project/edit?project='.$item->id) }}" class="btn btn-sm btn-secondary"><i class="fa fa-edit"></i> Edit</a>
                                 <a href="{{ url('administrator/project/delete?project='.$item->id) }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</a>
                               </div></td>
@@ -188,5 +198,43 @@
     drEvent.on('dropify.afterClear', function(event, element){
         // $('input[name=thumbnail]').val('');
     });
+
+    const downloadQR = (svg) => {
+        // fetch SVG-rendered image as a blob object
+        svg.insertBefore(style, svg.firstChild); // CSS must be explicitly embedded
+        const data = (new XMLSerializer()).serializeToString(svg);
+        const svgBlob = new Blob([data], {
+            type: 'image/svg+xml;charset=utf-8'
+        });
+            style.remove(); // remove temporarily injected CSS
+
+        // convert the blob object to a dedicated URL
+        const url = URL.createObjectURL(svgBlob);
+
+        // load the SVG blob to a flesh image object
+        const img = new Image();
+        img.addEventListener('load', () => {
+            // draw the image on an ad-hoc canvas
+            const bbox = svg.getBBox();
+
+            const canvas = document.createElement('canvas');
+            canvas.width = bbox.width;
+            canvas.height = bbox.height;
+
+            const context = canvas.getContext('2d');
+            context.drawImage(img, 0, 0, bbox.width, bbox.height);
+
+            URL.revokeObjectURL(url);
+
+            // trigger a synthetic download operation with a temporary link
+            const a = document.createElement('a');
+            a.download = 'image.png';
+            document.body.appendChild(a);
+            a.href = canvas.toDataURL();
+            a.click();
+            a.remove();
+        });
+        img.src = url;
+    };
 </script>
 @endsection

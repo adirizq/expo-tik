@@ -141,4 +141,37 @@ class VotesController extends Controller
         }
         return redirect('administrator/votes');
     }
+
+
+    public function showVote($encId) {
+        $id = Crypt::decrypt($encId);
+        $project = Project::findOrFail($id);
+
+        return view('showVote', [
+            'project' => $project
+        ]);
+    }
+
+    public function downloadQRCode(Request $request, $type) {
+        $request->validate([
+            'vpk' => 'required',
+        ]);
+
+        $headers    = array('Content-Type' => ['png','svg','eps']);
+        $type       = $type == 'jpg' ? 'png' : $type;
+        $image      = \QrCode::format($type)
+                    ->size(300)->generate($request->vpk);
+
+        $imageName = 'qr-code';
+        if ($type == 'svg') {
+            $svgTemplate = new \SimpleXMLElement($image);
+            $svgTemplate->registerXPathNamespace('svg', 'http://www.w3.org/2000/svg');
+            $svgTemplate->rect->addAttribute('fill-opacity', 0);
+            $image = $svgTemplate->asXML();
+        }
+
+        \Storage::disk('public')->put($imageName, $image);
+
+        return response()->download('storage/'.$imageName, $imageName.'.'.$type, $headers);
+    }
 }
