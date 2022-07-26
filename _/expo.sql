@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---
+-- 
 -- Table structure for table `config`
 --
 
@@ -188,7 +188,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `created_at`, `updated_at`) VALUES
-(1907, 'Administrator', 'admin', '$2y$10$9DsNqykoNVm9EzPoEAF3dutZys6BHmtXnGBGs1IwGJpaVVv3nvy/.', '2021-07-22 10:41:58', '2021-07-22 10:41:58');
+(1, 'Administrator', 'admin', '$2y$10$ooh1rk.NIv5eJDOA2HslteuVfryzFto6Xk1Qh6a2kji1F7UQ/RS2u', '2021-07-22 10:41:58', '2021-07-22 10:41:58');
 
 -- --------------------------------------------------------
 
